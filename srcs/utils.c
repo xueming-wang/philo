@@ -6,11 +6,12 @@
 /*   By: xuwang <xuwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/29 13:10:43 by xuwang            #+#    #+#             */
-/*   Updated: 2021/07/30 18:08:10 by xuwang           ###   ########.fr       */
+/*   Updated: 2021/08/01 19:46:58 by xuwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
 void	_free_(void *philo)
 {
 	if (philo)
@@ -66,7 +67,12 @@ long	ft_atoi(const char *str)
 	return (res * signe);
 }
 
-
+void ft_usleep(long long ms, int i)
+{
+	const long long start = get_time();
+	while (get_time() - start < ms)
+		unsleep(MICRO_SECOND);
+}
 
 
 //个程序都有同样的选项
@@ -78,11 +84,6 @@ time_to_sleep //以毫秒为单位，是哲学家将花费睡眠的时间。
 number_of_times_each_philosopher_must_eat //参数是可选的，如果所有哲学家至少在什么时间内吃运行，如果没有吃就停止。 如果未选择 就只在哲学家死亡时停止。*/
 
 
-// timestamp_in_ms X has taken a fork ◦ timestamp_in_ms X is eating
-// ◦ timestamp_in_ms X is sleeping
-// ◦ timestamp_in_ms X is thinking
-// ◦ timestamp_in_ms X died
-
 // 打印的状态不应与其他哲学家的状态打乱或交织在一起。
 // • 哲学家的死亡与打印其死亡的时间之间不能超过 10 毫秒。
 // • 再次重申，哲学家应该避免死亡！
@@ -91,16 +92,15 @@ number_of_times_each_philosopher_must_eat //参数是可选的，如果所有哲
 // • 为避免哲学家复制分叉，您应该为每个分叉状态使用互斥锁来保护分叉状态。
 // • 每个哲学家都应该是一个线程。
 
-// 防止死索 
-// 当左右都可以使用的时候才允许拿起筷子 
-//  1.使用线程管成 通过监视  
-//     while (true左右都有筷子)
-//     {
-//         get_focks(N);
-//         release_focks(k) 
-//     }
-// 。/
-
+// pthread_mutex_init(); 创建锁头  
+// pthread_create();  创建线程
+// pthread_create();  
+//  pthread_mutex_lock();  拿走叉子锁上锁头
+//    
+//     pthread_mutex_unlock();  放下叉子就是解锁
+//     pthread_join(ptid1,NULL);  //阻挡线程结束 挂起进程
+//     pthread_join(ptid2,NULL);  
+//     pthread_mutex_destroy(&(cnt.lock)); 
 /*
 -void * memset(void *s, int c, size_t n) 作用是将某一块内存中的内容全部设置为指定的值
 -int pthread_create(pthread_t*restrict tidp,const pthread_attr_t *restrict_attr,void*（*start_rtn)(void*),void *restrict arg); 返回0，否则返回出错编号

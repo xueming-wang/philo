@@ -6,7 +6,7 @@
 #    By: xuwang <xuwang@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/29 13:10:57 by xuwang            #+#    #+#              #
-#    Updated: 2021/07/30 17:34:32 by xuwang           ###   ########.fr        #
+#    Updated: 2021/08/01 19:48:54 by xuwang           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,8 @@ CC = gcc
 CFLAGE = -Wall -Wextra -Werror
 SRC := srcs/main.c \
 		srcs/utils.c \
-		srcs/init.c 
+		srcs/init.c \
+		srcs/philo.c 
 
 OBJ := $(SRC:%.c=%.o)
 
@@ -23,7 +24,7 @@ OBJ := $(SRC:%.c=%.o)
 	$(CC) $(CFLAGE) -c $< -o $@
 
 $(NAME): $(OBJ)
-	@$(CC) $(CFLAGE) $(OBJ) -I. -o $@
+	$(CC) $(CFLAGE) $(OBJ) -I. -o $@
 
 all: $(NAME)
 
