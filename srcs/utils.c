@@ -6,7 +6,7 @@
 /*   By: xuwang <xuwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/29 13:10:43 by xuwang            #+#    #+#             */
-/*   Updated: 2021/08/01 19:46:58 by xuwang           ###   ########.fr       */
+/*   Updated: 2021/08/04 18:47:31 by xuwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,17 @@ void	_free_(void *philo)
 	philo = NULL;
 }
 
-int	__exit__(char *msg, t_philo *philo, int ret)
+int	__exit__(char *msg, t_each_philo *each_philo, int ret)
 {
 	if (msg)
 		printf("%s\n", msg);
-	if (philo)
+	if (each_philo)
 	{
-		if (philo->each_philo)
-			_free_(philo->each_philo);
-		if (philo->fork)
-			_free_(philo->fork);
-		_free_(philo);
+		if (each_philo->info_utils)
+			_free_(each_philo->info_utils);
+		_free_(each_philo);
 	}
-	exit(ret);
+	return (ret);
 }
 
 void	*ft_calloc(size_t count, size_t size)
@@ -67,12 +65,6 @@ long	ft_atoi(const char *str)
 	return (res * signe);
 }
 
-void ft_usleep(long long ms, int i)
-{
-	const long long start = get_time();
-	while (get_time() - start < ms)
-		unsleep(MICRO_SECOND);
-}
 
 
 //个程序都有同样的选项

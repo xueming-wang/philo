@@ -6,13 +6,13 @@
 /*   By: xuwang <xuwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/29 13:10:49 by xuwang            #+#    #+#             */
-/*   Updated: 2021/08/01 19:46:09 by xuwang           ###   ########.fr       */
+/*   Updated: 2021/08/04 18:57:41 by xuwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static int creat_pthread(t_philo *philo)
+static int creat_pthread(t_philo *philo, t_each_philo *each_philo)
 {
     int i ;
     
@@ -21,32 +21,38 @@ static int creat_pthread(t_philo *philo)
     {
         if (pthread_mutex_init(&philo->fork[i++], NULL) != 0)
             return(FAILURE);
+        i++;
     }
+    if (pthread_mutex_init(&philo->mutex, NULL) != 0)
+            return(FAILURE);
     i = 0;
     while (i < philo->nbr_philo)   //线程的函数
     {
-        if (pthread_create(&philo->each_philo->philo, NULL, philo, (void*)i) != 0)
+        each_philo[i].info_utils = philo;
+        if (pthread_create(&(each_philo[i].philo), NULL, do_philo, (void *)&(each_philo[i])) != 0)
             return (FAILURE);
         i++;
     }
+    
     return (SUCCESS);
 }
 
-static int run_pthread(t_philo *philo)
+static int run_pthread(t_philo *philo, t_each_philo *each_philo)
 {
     int i;
-
-    if (creat_pthread(philo) != SUCCESS)
+    
+    if (creat_pthread(philo, each_philo) != SUCCESS)
         return(FAILURE);
     i = 0;
     while(i < philo->nbr_philo)
     {
-        if (pthread_join(philo->each_philo->philo, NULL) != 0)
+        if (pthread_join(each_philo[i++].philo, NULL) != 0)
             return (FAILURE);
     }
     i = 0;
     while(i < philo->nbr_philo)
         pthread_mutex_destroy(&philo->fork[i++]);
+    pthread_mutex_destroy(&philo->mutex);
     return (SUCCESS); 
 }
 
@@ -79,20 +85,22 @@ static int  check_args(char **av)
 
 int main(int ac,  char **av)
 {
-    t_philo *philo;
-    
+    t_each_philo *each_philo;
+    t_philo *philo_info;
+
     if (ac > 6 || ac < 5)
-        __exit__(NULL, philo, FAILURE);
+    {
+        printf("error args\n");
+        return (1);
+    }
     check_args(av);
-    philo = ft_calloc (sizeof(t_philo), 1);
-    if (!philo)
-         __exit__("Error", philo, FAILURE);
-    if (init_value(philo, av) == FAILURE)
-         __exit__("Init Error", philo, FAILURE);
-    philo->start_time = get_time();
-    if (philo->start_time == -1)
-        __exit__("Time error", philo, FAILURE);
-    if (run_pthread(philo) == FAILURE)
-        __exit__(NULL, philo, FAILURE);
-    __exit__(NULL, philo, SUCCESS);          
+    each_philo = init_each_philo(ft_atoi(av[1]));
+    if (!each_philo)
+        __exit__("init each philo error\n", each_philo, FAILURE);
+    philo_info = init_value(av);
+    if (!philo_info)
+         __exit__("init error\n", each_philo, FAILURE);
+    if (run_pthread(philo_info, each_philo) == FAILURE)
+        __exit__("RUN error\n", each_philo, FAILURE);
+     __exit__("NULL", each_philo, SUCCESS);;
 }
