@@ -6,7 +6,7 @@
 /*   By: xuwang <xuwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/29 13:10:49 by xuwang            #+#    #+#             */
-/*   Updated: 2021/08/04 18:57:41 by xuwang           ###   ########.fr       */
+/*   Updated: 2021/08/05 18:02:08 by xuwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ static int creat_pthread(t_philo *philo, t_each_philo *each_philo)
     return (SUCCESS);
 }
 
+
 static int run_pthread(t_philo *philo, t_each_philo *each_philo)
 {
     int i;
@@ -55,6 +56,7 @@ static int run_pthread(t_philo *philo, t_each_philo *each_philo)
     pthread_mutex_destroy(&philo->mutex);
     return (SUCCESS); 
 }
+
 
 static int  check_args(char **av)
 {
@@ -86,7 +88,8 @@ static int  check_args(char **av)
 int main(int ac,  char **av)
 {
     t_each_philo *each_philo;
-    t_philo *philo_info;
+    t_philo *philo_info ;
+
 
     if (ac > 6 || ac < 5)
     {
@@ -96,11 +99,12 @@ int main(int ac,  char **av)
     check_args(av);
     each_philo = init_each_philo(ft_atoi(av[1]));
     if (!each_philo)
-        __exit__("init each philo error\n", each_philo, FAILURE);
+        __exit__("init each philo error\n", each_philo, NULL, FAILURE);
     philo_info = init_value(av);
     if (!philo_info)
-         __exit__("init error\n", each_philo, FAILURE);
+         __exit__("init error\n", each_philo, philo_info, FAILURE);
     if (run_pthread(philo_info, each_philo) == FAILURE)
-        __exit__("RUN error\n", each_philo, FAILURE);
-     __exit__("NULL", each_philo, SUCCESS);;
+        __exit__("RUN error\n", each_philo, philo_info, FAILURE);
+     __exit__("NULL", each_philo, philo_info, SUCCESS);;
 }
+
