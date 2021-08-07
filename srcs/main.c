@@ -6,7 +6,7 @@
 /*   By: xuwang <xuwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/29 13:10:49 by xuwang            #+#    #+#             */
-/*   Updated: 2021/08/05 18:02:08 by xuwang           ###   ########.fr       */
+/*   Updated: 2021/08/07 16:33:58 by xuwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,10 @@ static int creat_pthread(t_philo *philo, t_each_philo *each_philo)
     {
         if (pthread_mutex_init(&philo->fork[i++], NULL) != 0)
             return(FAILURE);
-        i++;
     }
     if (pthread_mutex_init(&philo->mutex, NULL) != 0)
+            return(FAILURE);
+    if (pthread_mutex_init(&philo->mutex2, NULL) != 0)
             return(FAILURE);
     i = 0;
     while (i < philo->nbr_philo)   //线程的函数
@@ -33,7 +34,6 @@ static int creat_pthread(t_philo *philo, t_each_philo *each_philo)
             return (FAILURE);
         i++;
     }
-    
     return (SUCCESS);
 }
 
@@ -54,6 +54,7 @@ static int run_pthread(t_philo *philo, t_each_philo *each_philo)
     while(i < philo->nbr_philo)
         pthread_mutex_destroy(&philo->fork[i++]);
     pthread_mutex_destroy(&philo->mutex);
+    pthread_mutex_destroy(&philo->mutex2);
     return (SUCCESS); 
 }
 
@@ -96,7 +97,8 @@ int main(int ac,  char **av)
         printf("error args\n");
         return (1);
     }
-    check_args(av);
+    if (check_args(av) == FAILURE)
+         __exit__("args error\n", NULL, NULL, FAILURE);
     each_philo = init_each_philo(ft_atoi(av[1]));
     if (!each_philo)
         __exit__("init each philo error\n", each_philo, NULL, FAILURE);
@@ -105,6 +107,6 @@ int main(int ac,  char **av)
          __exit__("init error\n", each_philo, philo_info, FAILURE);
     if (run_pthread(philo_info, each_philo) == FAILURE)
         __exit__("RUN error\n", each_philo, philo_info, FAILURE);
-     __exit__("NULL", each_philo, philo_info, SUCCESS);;
+     __exit__(NULL, each_philo, philo_info, SUCCESS);;
 }
 
