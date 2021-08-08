@@ -6,7 +6,7 @@
 /*   By: xuwang <xuwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/29 13:10:49 by xuwang            #+#    #+#             */
-/*   Updated: 2021/08/07 16:33:58 by xuwang           ###   ########.fr       */
+/*   Updated: 2021/08/08 16:24:35 by xuwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,9 @@ int main(int ac,  char **av)
     philo_info = init_value(av);
     if (!philo_info)
          __exit__("init error\n", each_philo, philo_info, FAILURE);
+    philo_info->start_time = get_time();
+    if (philo_info->start_time == -1)
+        __exit__("Time error\n", each_philo, philo_info, FAILURE);
     if (run_pthread(philo_info, each_philo) == FAILURE)
         __exit__("RUN error\n", each_philo, philo_info, FAILURE);
      __exit__(NULL, each_philo, philo_info, SUCCESS);;

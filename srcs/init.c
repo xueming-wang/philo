@@ -6,7 +6,7 @@
 /*   By: xuwang <xuwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/30 14:51:15 by xuwang            #+#    #+#             */
-/*   Updated: 2021/08/07 16:50:38 by xuwang           ###   ########.fr       */
+/*   Updated: 2021/08/08 16:46:47 by xuwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_philo *init_value(char **av)
     philo = ft_calloc (sizeof(t_philo), 1);
     if (!philo)
         return (NULL);
-    philo->start_time = get_time();
+    //philo->start_time = get_time();
     philo->nbr_philo = ft_atoi(av[1]);
     philo->time_to_die = ft_atoi(av[2]);
     philo->time_to_eat = ft_atoi(av[3]);
@@ -71,6 +71,8 @@ void  philo_state(t_each_philo *each_philo, int state)
                             "is sleeping", "is thinking", "died"};
 
     if (each_philo->info_utils->check_died == 1)
+        return ;
+    if (check_enough_eat(each_philo, &(each_philo)->info_utils))
         return ;
     printf("[%lld] philosopher[%d] %s\n", 
         get_time() - (each_philo->info_utils->start_time), each_philo->id, states[state]);
