@@ -6,7 +6,7 @@
 /*   By: xuwang <xuwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/29 13:10:55 by xuwang            #+#    #+#             */
-/*   Updated: 2021/08/08 16:47:08 by xuwang           ###   ########.fr       */
+/*   Updated: 2021/08/08 17:33:39 by xuwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,13 @@ int check_enough_eat(t_each_philo *each_philo, t_philo **info_utils);
 #endif
 
 
-// ./philo 1 200 200 200 // die -> ~200 ms     400ms
+// ./philo 1 200 200 200 // die -> ~200 ms     ok 400ms!!!!!!!!!!!
 //  ./philo 2 800 200 200 // loop infinite     ok
 //  ./philo 5 800 200 200 // loop infinite     ok
-//  ./philo 5 800 200 200 7 // loop down if every philo ate 7 times    ok 41 39 4200ms
+//  ./philo 5 800 200 200 7 // loop down if every philo ate 7 times    ok 35 3400ms
 //  ./philo 4 410 200 200 // loop infinite      ok
-//  ./philo 4 310 200 200 // die                ok 有打印
-//  ./philo 4 310 200 100 // die                 ok 有打印    
-//  ./philo 4 500 200 2147483647 // die -> ~500 ms   卡到400 不走
+//  ./philo 4 310 200 200 // die                ok 有打印 !!!!!!!!
+//  ./philo 4 310 200 100 // die                 ok 有打印    !!!!!!!!!
+//  ./philo 4 500 200 2147483647 // die -> ~500 ms   卡到400 不走  KO !!!!!!!!!
 //  ./philo 4 2147483647 200 200 // loop infinite   OK
-//  ./philo 4 200 210 200 // die -> <210 ms       ko 420秒死
+//  ./philo 4 200 210 200 // die -> <210 ms       ok 420秒死 !!!!!!!!!!
