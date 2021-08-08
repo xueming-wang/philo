@@ -6,7 +6,7 @@
 /*   By: xuwang <xuwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/01 14:08:00 by xuwang            #+#    #+#             */
-/*   Updated: 2021/08/08 18:20:39 by xuwang           ###   ########.fr       */
+/*   Updated: 2021/08/08 18:46:48 by xuwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,11 @@ static void sleeping(t_each_philo *each_philo)
 
 void  *do_philo(void *each_philo)
 {
-    while ((check_died(each_philo, &((t_each_philo*)each_philo)->info_utils)) &&
-             !(check_enough_eat(each_philo, &((t_each_philo*)each_philo)->info_utils)))
+   
+    while ((check_died(each_philo, &((t_each_philo*)each_philo)->info_utils))
+     && !(check_enough_eat(each_philo, &((t_each_philo*)each_philo)->info_utils)))
     {
+        
         philo_eat((t_each_philo*)each_philo);
         eating((t_each_philo*)each_philo);
         putdown_fork((t_each_philo*)each_philo);
@@ -95,7 +97,7 @@ void  *do_philo(void *each_philo)
            philo_state(each_philo, 3); //打印思考状态
         } 
         ft_usleep(((t_each_philo*)each_philo)->info_utils->time_to_eat- ((t_each_philo*)each_philo)->info_utils->time_to_sleep, 
-         each_philo, &((t_each_philo*)each_philo)->info_utils);
+        each_philo, &((t_each_philo*)each_philo)->info_utils);
     }
     
     return (NULL);
