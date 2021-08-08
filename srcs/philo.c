@@ -6,7 +6,7 @@
 /*   By: xuwang <xuwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/01 14:08:00 by xuwang            #+#    #+#             */
-/*   Updated: 2021/08/08 17:50:25 by xuwang           ###   ########.fr       */
+/*   Updated: 2021/08/08 18:20:39 by xuwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,51 +57,46 @@ static void putdown_fork(t_each_philo *each_philo)
 static void eating(t_each_philo *each_philo)
 {
 
-    
+   
     if (each_philo->info_utils->nbr_philo != 1)
     {
         philo_state(each_philo, 0); //打印吃饭状
     }
-    // pthread_mutex_unlock(&each_philo->info_utils->mutex);
-        each_philo->last_meal = get_time();
-    
+    each_philo->last_meal = get_time();
     if (each_philo->info_utils->nbr_philo == 1)
-         ft_usleep(each_philo->info_utils->time_to_die);
+         ft_usleep(each_philo->info_utils->time_to_die, each_philo, &each_philo->info_utils);
     else
     {
-        ft_usleep(each_philo->info_utils->time_to_eat);  //usleep吃饭时间
+        ft_usleep(each_philo->info_utils->time_to_eat, each_philo, &each_philo->info_utils);  //usleep吃饭时间
         each_philo->nbr_eat++;   //吃饭的顿数增加
-   }
+     }
+     
 }
 
 static void sleeping(t_each_philo *each_philo)
 {
     if (each_philo->info_utils->check_died != 1 && each_philo->info_utils->nbr_philo != 1)
         philo_state(each_philo, 2); // 打印睡觉状态
-    ft_usleep(each_philo->info_utils->time_to_sleep); // 睡觉
+    ft_usleep(each_philo->info_utils->time_to_sleep, each_philo, &each_philo->info_utils); // 睡觉
        
 }
 
 void  *do_philo(void *each_philo)
 {
-    // if(((t_each_philo *)each_philo)->info_utils->check_died == 1)
-    //         return (NULL);
-    // if (check_enough_eat(each_philo, &((t_each_philo*)each_philo)->info_utils)) 
-    //         return (NULL);
     while ((check_died(each_philo, &((t_each_philo*)each_philo)->info_utils)) &&
              !(check_enough_eat(each_philo, &((t_each_philo*)each_philo)->info_utils)))
-    {   
-       
+    {
         philo_eat((t_each_philo*)each_philo);
         eating((t_each_philo*)each_philo);
         putdown_fork((t_each_philo*)each_philo);
         sleeping(each_philo);
-       
         if (((t_each_philo*)each_philo)->info_utils->nbr_philo != 1)
         {   
-           philo_state(each_philo, 3); 
-        } //打印思考状态
-        ft_usleep(((t_each_philo*)each_philo)->info_utils->time_to_eat- ((t_each_philo*)each_philo)->info_utils->time_to_sleep);
-    } 
+           philo_state(each_philo, 3); //打印思考状态
+        } 
+        ft_usleep(((t_each_philo*)each_philo)->info_utils->time_to_eat- ((t_each_philo*)each_philo)->info_utils->time_to_sleep, 
+         each_philo, &((t_each_philo*)each_philo)->info_utils);
+    }
+    
     return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: xuwang <xuwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/30 14:51:15 by xuwang            #+#    #+#             */
-/*   Updated: 2021/08/08 16:46:47 by xuwang           ###   ########.fr       */
+/*   Updated: 2021/08/08 18:18:01 by xuwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,10 @@ void  philo_state(t_each_philo *each_philo, int state)
         get_time() - (each_philo->info_utils->start_time), each_philo->id, states[state]);
 }
 
-void ft_usleep(long long ms)
+void ft_usleep(long long ms, t_each_philo *each_philo, t_philo **info_utils)
 {
 	const long long start = get_time();
-	while (get_time() - start < ms)
+	while (get_time() - start < ms && check_died(each_philo, info_utils))
 		usleep(MICRO_SECOND);
 }
 
